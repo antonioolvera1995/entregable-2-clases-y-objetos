@@ -74,7 +74,6 @@ class Books {
         let all = [];
         this.books.forEach(elem => {
             all.push(elem);
-            console.log(elem);
         });
         return all;
     }
@@ -97,39 +96,20 @@ class Books {
                 auth += `${newBooks[i]}, `
             }
         }
-        console.log(auth);
+        return auth;
     }
 
 
 
 
     genreInfo(gen) {
-        let fullInfo = '';
         let newBooks = [];
-
-
-
-
-
         this.books.forEach(elem => {
             if (elem.genre === gen) {
                 newBooks.push(elem);
             }
         });
-
-        for (let i = 0; i < newBooks.length; i++) {
-            if (i >= newBooks.length - 1) {
-                fullInfo += `Libro ${i+1}: ${newBooks[i].information()}.`
-            } else {
-                fullInfo += `\nLibro ${i+1}: ${newBooks[i].information()}.`
-            }
-        }
-
-
-
-
-
-        return fullInfo;
+        return newBooks;
     }
 
 }
@@ -146,6 +126,7 @@ function loadBooks() {
     book3 = new Book(title3.value, author3.value, year3.value, genre3.value);
     arrayBooks = [book1, book2, book3];
 
+    show('Libros cargados con éxito');
 }
 
 
@@ -165,21 +146,31 @@ document.querySelector('#bt-1').addEventListener("click", function () {
 
     numb.forEach(element => {
         if (element.length < 4 || element.length > 4) {
-            console.log('La fecha debe de de tener una longitud de 4 números');
+            
             block = true;
         } else {
             block = false;
         }
     });
 
+    if(block){
+        alert('La fecha debe de de tener una longitud de 4 números');
+        return false;
+    }
+
     all.forEach(element => {
         if (element.length < 1) {
-            console.log('Debes de completar todos los campos, no debes dejar ninguno vacio');
+            
             block = true;
         } else {
             block = false;
         }
     });
+
+    if(block){
+        alert('Debes de completar todos los campos, no debes dejar ninguno vacio');
+        return false;
+    }
 
     if (!block) {
         loadBooks();
@@ -195,13 +186,17 @@ document.querySelector('#bt-2').addEventListener("click", function () {
     try {
         if (!arrayBooks.length === false) {
             let bookk = new Books(arrayBooks);
-            console.log(bookk.allBooks());
+            let stri = 'Todos los libros: '
+            let arr = bookk.allBooks();
+            arr.forEach(element => {
+                stri += `${element.title}, `;
+            });
+            stri = `${stri.substring(0,stri.length-2)}.`;
+            show(stri);
 
-        } else {
-            console.log('Primero debes de cargar los libros');
-        }
+        } 
     } catch (error) {
-        console.log('Primero debes de cargar los libros');
+        alert('Primero debes de cargar los libros');
     }
 
 
@@ -212,13 +207,12 @@ document.querySelector('#bt-3').addEventListener("click", function () {
     try {
         if (!arrayBooks.length === false) {
             let bookk = new Books(arrayBooks);
-            console.log(bookk.sortAuthors());
-
-        } else {
-            console.log('Primero debes de cargar los libros');
-        }
+            let arr = bookk.sortAuthors();
+            show(arr);
+        } 
+        
     } catch (error) {
-        console.log('Primero debes de cargar los libros');
+       alert('Primero debes de cargar los libros');
     }
 
 });
@@ -226,16 +220,26 @@ document.querySelector('#bt-3').addEventListener("click", function () {
 document.querySelector('#bt-4').addEventListener("click", function () {
 
     try {
-        if (!arrayBooks.length === false) {
-            let bookk = new Books(arrayBooks);
-            let gen = prompt('Escribe un genero');
-            console.log(bookk.genreInfo(gen));
+       
+            if (!arrayBooks.length === false) {
+                let bookk = new Books(arrayBooks);
+                let gen = prompt('Escribe un genero');
+                let arr = bookk.genreInfo(gen);
+            
+    
+    
+            for (let i = 0; i < arr.length; i++) {
+    
+                show(`Libro ${arr.length-i}: ${arr[i].information()}.`)
+    
+            }
 
-        } else {
-            console.log('Primero debes de cargar los libros');
-        }
+
+
+
+        } 
     } catch (error) {
-        console.log('Primero debes de cargar los libros');
+       alert('Primero debes de cargar los libros');
     }
 
 
@@ -263,4 +267,19 @@ function autocomplete() {
 
 }
 
-autocomplete();
+document.querySelector('#bt-auto').addEventListener('click', autocomplete);
+
+function show(cont) {
+
+    let doc = document.createElement('div');
+    doc.classList.add('dialog-in')
+    let doc2 = document.createElement('p');
+
+    doc.appendChild(doc2);
+    let nod = document.createTextNode(`${cont}`);
+    doc2.appendChild(nod);
+
+    let elem = document.querySelector('.dialog-main');
+    elem.insertBefore(doc, elem.childNodes[0]);
+
+}
