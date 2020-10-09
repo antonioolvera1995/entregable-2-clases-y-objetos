@@ -141,36 +141,39 @@ document.querySelector('#bt-1').addEventListener("click", function () {
         title2.value, author2.value, year2.value, genre2.value,
         title3.value, author3.value, year3.value, genre3.value
     ];
-
     let numb = [year1.value, year2.value, year3.value];
 
-    numb.forEach(element => {
-        if (element.length < 4 || element.length > 4) {
-            
+
+
+    all.forEach(element => {
+
+        
+        if (element.length < 1) {
+
             block = true;
-        } else {
-            block = false;
         }
     });
 
-    if(block){
+    if (block) {
+        alert('Debes de completar todos los campos, no debes dejar ninguno vacio');
+        return false;
+    }
+
+
+
+
+    numb.forEach(element => {
+        if (element.length < 4 || element.length > 4) {
+
+            block = true;
+        }
+    });
+
+    if (block) {
         alert('La fecha debe de de tener una longitud de 4 números');
         return false;
     }
 
-    all.forEach(element => {
-        if (element.length < 1) {
-            
-            block = true;
-        } else {
-            block = false;
-        }
-    });
-
-    if(block){
-        alert('Debes de completar todos los campos, no debes dejar ninguno vacio');
-        return false;
-    }
 
     if (!block) {
         loadBooks();
@@ -194,7 +197,7 @@ document.querySelector('#bt-2').addEventListener("click", function () {
             stri = `${stri.substring(0,stri.length-2)}.`;
             show(stri);
 
-        } 
+        }
     } catch (error) {
         alert('Primero debes de cargar los libros');
     }
@@ -209,10 +212,10 @@ document.querySelector('#bt-3').addEventListener("click", function () {
             let bookk = new Books(arrayBooks);
             let arr = bookk.sortAuthors();
             show(arr);
-        } 
-        
+        }
+
     } catch (error) {
-       alert('Primero debes de cargar los libros');
+        alert('Primero debes de cargar los libros');
     }
 
 });
@@ -220,26 +223,21 @@ document.querySelector('#bt-3').addEventListener("click", function () {
 document.querySelector('#bt-4').addEventListener("click", function () {
 
     try {
-       
-            if (!arrayBooks.length === false) {
-                let bookk = new Books(arrayBooks);
-                let gen = prompt('Escribe un genero');
-                let arr = bookk.genreInfo(gen);
-            
-    
-    
+
+        if (!arrayBooks.length === false) {
+            let bookk = new Books(arrayBooks);
+            let gen = document.querySelector('#genre-4').value;
+            let arr = bookk.genreInfo(gen);
+
             for (let i = 0; i < arr.length; i++) {
-    
+
                 show(`Libro ${arr.length-i}: ${arr[i].information()}.`)
-    
+
             }
 
-
-
-
-        } 
+        }
     } catch (error) {
-       alert('Primero debes de cargar los libros');
+        alert('Primero debes de cargar los libros');
     }
 
 
