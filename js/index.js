@@ -161,10 +161,15 @@ document.querySelector('#bt-1').addEventListener("click", function () {
 
 
 
-
+    const regex = /^[0-9]*$/;
     numb.forEach(element => {
         if (element.length < 4 || element.length > 4) {
 
+            block = true;
+        }
+        
+        if(!regex.test(element)){
+            alert('En el campo "Año"solo se admiten numeros');
             block = true;
         }
     });
